@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+{% load static %}
+{% load call_methods %}
+{% block title %}Manage{% endblock title %}
+{% block content %}
+
+<div class="row w-100 text-center">
+    <h1>Manage</h1>
+    <p>Manage accounts, categories, spending budgets, and saving goals.</p>
+</div>
+
+<div class="col-12">
+    <div class="row w-100">
+        <div class="col-12 col-lg-6">
+            <div class="accordion" id="accordionAccounts">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="accounts-heading">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                            Accounts
+                        </button>
+                    </h2>
+                    <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="accounts-heading"
+                        data-bs-parent="#accordionAccounts">
+                        <div class="accordion-body">
+                            {% if accounts %}
+                            <table class="table table-borderless">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Balance</th>
+                                        <th scope="col">View</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for account in accounts %}
+                                    <tr>
+                                        <td>{{ account.name }}</td>
+                                        <td>€{{ account.get_balance }}</td>
+                                        <td>
+                                            <a href="{% url 'account_detail' account.id %}">&#10097;</a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            {% else %}
+                            <small>No accounts added yet.</small>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="my-4">
+                <a href="{% url 'add_account' %}" class="btns btns-add">New Account</a>
+            </div>
+        </div>
+        <div class="col-12 col-lg-6">
+            <div class="accordion" id="accordionCategories">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="categories-heading">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                            Categories
+                        </button>
+                    </h2>
+                    <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="categories-heading"
+                        data-bs-parent="#accordionCategories">
+                        <div class="accordion-body">
+                            {% if categories %}
+                            <table class="table table-borderless">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Name</th>
+                                        <th scope="col"><a href="#">View</a></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for category in categories %}
+                                    <tr>
+                                        <td>{{ category.name }}</td>
+                                        <td>
+                                            <a href="{% url 'category_detail' category.id %}">&#10097;</a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            {% else %}
+                            <small>No categories added yet.</small>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="my-4">
+                <a href="{% url 'add_category' %}" class="btns btns-add">New Category</a>
+            </div>
+            <!-- <a href="{% url 'add_category' %}" class="btns btns-add my-8">New Category</a> -->
+        </div>
+    </div>
+
+    <div class="row w-100">
+        <div class="col-12 col-lg-6">
+            <div class="accordion" id="accordionBudgets">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="budgets-heading">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#flush-collapseThree" aria-expanded="false"
+                            aria-controls="flush-collapseThree">
+                            Spending Budgets
+                        </button>
+                    </h2>
+                    <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="budgets-heading"
+                        data-bs-parent="#accordionBudgets">
+                        <div class="accordion-body">
+                            {% if budgets %}
+                            <table class="table table-borderless">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Goal</th>
+                                        <th scope="col">Progress</th>
+                                        <th scope="col"><a href="#">View</a></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for budget in budgets %}
+                                    <tr>
+                                        <td>{{ budget.name }}</td>
+                                        <td>€{{ budget.goal_amount }}</td>
+                                        <td>€{{ budget.get_budget_progress }}</td>
+                                        <td>
+                                            <a href="{% url 'budget_detail' budget.id %}">&#10097;</a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            {% else %}
+                            <small>No spending budgets added yet.</small>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="my-4">
+                <a href="{% url 'add_spending_budget' %}" class="btns btns-add">New Budget</a>
+            </div>
+        </div>
+        <div class="col-12 col-lg-6">
+            <div class="accordion" id="accordionGoals">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="goals-heading">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#flush-collapseFour" aria-expanded="false"
+                            aria-controls="flush-collapseFour">
+                            Saving Goals
+                        </button>
+                    </h2>
+                    <div id="flush-collapseFour" class="accordion-collapse collapse" aria-labelledby="goals-heading"
+                        data-bs-parent="#accordionGoals">
+                        <div class="accordion-body">
+                            {% if goals %}
+                            <table class="table table-borderless">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Goal</th>
+                                        <th scope="col">Progress</th>
+                                        <th scope="col"><a href="#">View</a></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for goal in goals %}
+                                    <tr>
+                                        <td>{{ goal.name }}</td>
+                                        <td>€{{ goal.goal_amount }}</td>
+                                        <td>{% get_methods goal 'get_progress_display' as_percentage=True %}</td>
+                                        <td>
+                                            <a href="{% url 'saving_goal_detail' goal.id %}">&#10097;</a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            {% else %}
+                            <small>No saving goals added yet.</small>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="my-4">
+                <a href="{% url 'add_saving_goal' %}" class="btns btns-add">New Goal</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

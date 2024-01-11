@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}{{ budget.name }}{% endblock title %}
+
+{% block content %}
+
+<h1>{{ budget.name }}</h1>
+
+<div class="col">
+
+    <h2>Amount: €{{ budget.goal_amount }}</h2>
+
+    <h4>Percentage spent: {{ budget.get_budget_progress }}%</h4>
+    <div class="progress">
+        <div class="progress-bar bg-danger progress-bar-striped progress-bar-animated" role="progressbar"
+            aria-label="Budget spent percentage" aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100"
+            style="width: {{ progress }}%"></div>
+    </div>
+
+    <h4>Remaining: €{{ budget.get_budget_remaining }}</h4>
+
+    {% if budget.start_date %}
+
+    <p>Start Date: {{ budget.start_date }}</p>
+
+    {% endif %}
+
+    {% if budget.target_date %}
+
+    <p>Target Date: {{ budget.target_date }}</p>
+
+    {% endif %}
+
+    {% if budget.interval %}
+
+    <p>Interval: {{ budget.interval }}</p>
+
+    {% endif %}
+
+    {% if budget.description %}
+    <p>Description: {{ budget.description }}</p>
+    {% endif %}
+
+    {% if budget.notes %}
+    <p>Notes: {{ budget.notes }}</p>
+    {% endif %}
+
+    {% if budget.account %}
+    <p>Account: {{ budget.account }}</p>
+    {% endif %}
+</div>
+
+<div class="row">
+
+    <a href="{% url 'edit_spending_budget' budget.id %}" class="btns">Edit</a>
+
+    <a href="{% url 'delete_spending_budget' budget.id %}" class="btns btns-danger">Delete</a>
+
+    <a href="{{request.META.HTTP_REFERER}}" class="btns">Go back</a>
+</div>
+
+{% endblock content %}
+```

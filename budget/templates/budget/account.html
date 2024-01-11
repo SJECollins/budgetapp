@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Account: {{account_name}}{% endblock title %}
+{% block content %}
+<div class="col">
+    <h1>Account: {{account_name}}</h1>
+    <div class="row">
+        <a href="{% url 'edit_account' account.id %}" class="btns">Edit Account</a>
+        <a href="{% url 'delete_account' account.id %}" class="btns">Delete Account</a>
+    </div>
+
+
+    <h2>Balance: €{{balance}}</h2>
+
+    <h3>Transactions:</h3>
+    {% if transactions %}
+    <table class="table table-borderless">
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Amount</th>
+                <th>Date</th>
+                <th>Recurring</th>
+                <th>View</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in transactions %}
+            <tr>
+                <td>{{ transaction.income_or_expense }}</td>
+                <td>{{ transaction.amount }}</td>
+                <td>{{ transaction.date }}</td>
+                <td>
+                    {% if transaction.recurring %}
+                    &#10004;
+                    {% else %}
+                    &#10008;
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'transaction_detail' transaction.id %}">&#10097;
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+    </table>
+
+    {% else %}
+    <p>No transactions yet.</p>
+    {% endif %}
+    {% for transaction in transactions %}
+
+
+    {% empty %}
+    <div>
+        <p>No transactions yet.</p>
+    </div>
+    {% endfor %}
+
+</div>
+
+{% endblock content %}

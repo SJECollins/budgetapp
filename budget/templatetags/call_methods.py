@@ -1,0 +1,9 @@
+from django import template
+
+register = template.Library()
+
+
+@register.simple_tag
+def get_methods(obj, method_name, *args, **kwargs):
+    method = getattr(obj, method_name)
+    return method(*args, **kwargs)

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Saving Goals{% endblock title %}
+
+{% block content %}
+
+<h1>Saving Goals</h1>
+
+<div class="row">
+    <a href="{% url 'add_saving_goal' %}" class="btns">New Saving Goal</a>
+</div>
+
+<div>
+    {% if saving_goals %}
+    <table class="table table-borderless">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Amount</th>
+                <th>Target Date</th>
+                <th>View</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for saving_goal in saving_goals %}
+            <tr>
+                <td>{{ saving_goal.name }}</td>
+                <td>{{ saving_goal.amount }}</td>
+                <td>{{ saving_goal.target_date }}</td>
+                <td>
+                    <a href="{% url 'saving_goal_detail' saving_goal.id %}">&#10097;
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% else %}
+    <small>No saving goals yet.</small>
+    {% endif %}
+</div>
+
+{% endblock content %}
+```

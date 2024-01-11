@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Home{% endblock title %}
+
+{% block content %}
+
+<a href="{% url 'add_transaction' %}" class="btns btns-add">New Transaction</a>
+
+<h1>Overview</h1>
+<!-- Overview of income and expenses-->
+{% if spending_data %}
+<label for="timeRangeSelect">Select Time Range:</label>
+<select class="form-control" id="timeRangeSelect">
+    <option value="today">Today</option>
+    <option value="weekly">Weekly</option>
+    <option value="monthly">Monthly</option>
+    <option value="yearly">Yearly</option>
+    <option value="all" selected>All</option>
+</select>
+
+<div id="chart-container">
+    <canvas id="budgetChart" height="300" width="300"></canvas>
+</div>
+
+{% else %}
+<p>No transactions</p>
+{% endif %}
+
+<a href="{% url 'transactions' %}" class="btns">View Transactions</a>
+
+<div class="row d-flex flex-row w-100 justify-content-around lg:justify-content-evenly">
+    <div class="col-12 col-md-4 col-lg-3 text-center">
+        <!-- List of most recent transactions -->
+        <h2>Recent:</h2>
+        {% if recent_transactions %}
+        <table class="table table-borderless">
+            <thead>
+                <tr>
+                    <th scope="col">Type</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Date</th>
+                    <th scope="col"><a href="#">View</a></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for transaction in recent_transactions %}
+                <tr>
+                    <td>{{ transaction.income_or_expense }}</td>
+                    <td>€{{ transaction.amount }}</td>
+                    <td>{{ transaction.date|date:"d/m/y" }}</td>
+                    <td>
+                        <a href="{% url 'transaction_detail' transaction.id %}">&#10097;</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <small>No recent transactions</small>
+        {% endif %}
+    </div>
+    <div class="col-12 col-md-4 col-lg-3 text-center">
+        <!-- List of upcoming transactions -->
+        <h2>Upcoming:</h2>
+        {% if upcoming_transactions %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Type</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Date</th>
+                    <th scope="col"><a href="#">View</a></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for transaction in upcoming_transactions %}
+                <tr>
+                    <td>{{ transaction.income_or_expense }}</td>
+                    <td>€{{ transaction.amount }}</td>
+                    <td>{{ transaction.date }}</td>
+                    <td></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <small>No upcoming transactions</small>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{{ spending_data|json_script:"id_spending_data" }}
+{% if spending_data %}
+<script src="{% static 'budget/js/chart.js' %}"></script>
+{% endif %}
+{% endblock extra_js %}

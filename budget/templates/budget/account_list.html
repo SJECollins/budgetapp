@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Accounts{% endblock title %}
+
+<div class="col-12">
+    <h1>Accounts</h1>
+    {% for account in accounts %}
+
+    <h2>Account: {{account.name}}</h2>
+    <p>Balance: {{account.get_balance}}</p>
+    <a href="{% url 'account_detail' account.id %}" class="btns">View</a>
+
+    {% empty %}
+    <div>
+        <p>No transactions yet.</p>
+    </div>
+    {% endfor %}
+
+</div>
+
+
+{% block content %}

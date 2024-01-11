@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}{{ transaction.name }}{% endblock title %}
+
+{% block content %}
+
+<h1>{{ transaction }}</h1>
+
+<div class="col">
+    <h2>{{ transaction.income_or_expense }}</h2>
+
+    <h3>Amount: €{{ transaction.amount }}</h3>
+
+    <p>Date: {{ transaction.date }}</p>
+
+    {% if transaction.recurring %}
+    <p>Recurring: Yes</p>
+    {% else %}
+    <p>Recurring: No</p>
+    {% endif %}
+
+    {% if not transaction.new_transaction_created %}
+    <p>Next Date: {{ transaction.due_date }}</p>
+    {% endif %}
+
+    {% if transaction.category %}
+    <p>Category: {{ transaction.category }}</p>
+    {% endif %}
+
+    {% if transaction.account %}
+    <p>Account: {{ transaction.account }}</p>
+    {% endif %}
+
+    {% if transaction.description %}
+    <p>Description: {{ transaction.description }}</p>
+    {% endif %}
+
+    {% if transaction.notes %}
+    <p>Notes: {{ transaction.notes }}</p>
+    {% endif %}
+</div>
+
+<div class="row">
+    <a href="{% url 'edit_transaction' transaction.id %}" class="btns">Edit</a>
+    <a href="{% url 'delete_transaction' transaction.id %}" class="btns btns-danger">Delete</a>
+    <a href="{{request.META.HTTP_REFERER}}" class="btns">Go back</a>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock title %}
+
+{% block content %}
+
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1>Home</h1>
+                {% if user.is_authenticated %}
+                <p>Welcome, {{ user.username }}!</p>
+                <p>Vist your budget page <a class="links" href="{% url 'budget' %}">here</a>.</p>
+                {% else %}
+                <p>Welcome, guest!</p>
+                <p>To use this budget app, please <a class="links" href="{% url 'account_login' %}">sign in</a> or <a
+                        class="links" href="{% url 'account_signup' %}">register</a> if you don't already
+                    have an account.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}
